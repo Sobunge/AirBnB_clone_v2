@@ -5,6 +5,7 @@ import unittest
 import datetime
 from uuid import UUID
 import json
+import pep8
 import os
 import pycodestyle
 
