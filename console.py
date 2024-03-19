@@ -320,6 +320,8 @@ class HBNBCommand(cmd.Cmd):
                 # update dictionary with name, value pair
                 new_dict.__dict__.update({att_name: att_val})
 
+        new_dict.updated_at = datetime.now()
+
         new_dict.save()  # save updates to file
 
     def help_update(self):
