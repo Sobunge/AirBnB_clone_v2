@@ -3,6 +3,7 @@
 from models.base_model import BaseModel
 import unittest
 import datetime
+import time
 from uuid import UUID
 import json
 import pep8
@@ -108,6 +109,7 @@ class test_basemodel(unittest.TestCase):
         """ """
         new = self.value()
         self.assertEqual(type(new.updated_at), datetime.datetime)
+        time.sleep(1)
         n = new.to_dict()
         new = BaseModel(**n)
         self.assertFalse(new.created_at == new.updated_at)
