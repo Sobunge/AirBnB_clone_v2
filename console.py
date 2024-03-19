@@ -2,7 +2,6 @@
 """ Console Module """
 import cmd
 import sys
-from datetime import datetime
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -75,7 +74,7 @@ class HBNBCommand(cmd.Cmd):
                 if pline:
                     # check for *args or **kwargs
                     if pline[0] == '{' and pline[-1] == '}'\
-                            and type(eval(pline)) == dict:
+                            and type(eval(pline)) is dict:
                         _args = pline
                     else:
                         _args = pline.replace(',', '')
@@ -114,58 +113,27 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, arg):
-    """ Create an object with given parameters """
-    if not arg:
-        print("** class name missing **")
-        return
+    def do_create(self, args):
+        """ Create an object of any class"""
+        try:
+            if not args:
+                raise SyntaxError()
+            arg_list = args.split(" ")
+            kw = {}
+            for arg in arg_list[1:]:
+                arg_splited = arg.split("=")
+                arg_splited[1] = eval(arg_splited[1])
+                if type(arg_splited[1]) is str:
+                    arg_splited[1] = arg_splited[1].replace("_", " ").replace('"', '\\"')
+                kw[arg_splited[0]] = arg_splited[1]
+        except SyntaxError:
+            print("** class name missing **")
+        except NameError:
+            print("** class doesn't exist **")
+        new_instance = HBNBCommand.classes[arg_list[0]](**kw)
+        new_instance.save()
+        print(new_instance.id)
 
-    args = arg.split()
-    class_name = args[0]
-
-    if class_name not in HBNBCommand.classes:
-        print("** class doesn't exist **")
-        return
-
-    # Extract parameters
-    params = {}
-    for param in args[1:]:
-        if "=" not in param:
-            continue
-        key, value = param.split("=")
-
-        # Handle string value
-        if value.startswith('"') and value.endswith('"'):
-            # Replace underscores with spaces
-            value = value[1:-1].replace('_', ' ')
-            # Unescape double quotes
-            value = value.replace('\\"', '"')
-        # Handle float value
-        elif '.' in value:
-            try:
-                value = float(value)
-            except ValueError:
-                continue
-        # Handle integer value
-        else:
-            try:
-                value = int(value)
-            except ValueError:
-                continue
-        params[key] = value
-
-    # Ensure 'updated_at' and 'created_at' are set
-    if 'updated_at' not in params:
-        params['updated_at'] = datetime.now().isoformat()
-    if 'created_at' not in params:
-        params['created_at'] = datetime.now().isoformat()
-
-    # Create instance with parameters
-    new_instance = HBNBCommand.classes[class_name](**params)
-    storage.save()
-    print(new_instance.id)
-    storage.save()
-    
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
@@ -246,13 +214,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
-        else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all(HBNBCommand.classes[args]).items():
                 print_list.append(str(v))
-
+        else:
+            for k, v in storage.all().items():
+                print_list.append(str(v))
         print(print_list)
 
     def help_all(self):
@@ -304,7 +270,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         # first determine if kwargs or args
-        if '{' in args[2] and '}' in args[2] and type(eval(args[2])) == dict:
+        if '{' in args[2] and '}' in args[2] and type(eval(args[2])) is dict:
             kwargs = eval(args[2])
             args = []  # reformat kwargs into list, ex: [<name>, <value>, ...]
             for k, v in kwargs.items():
