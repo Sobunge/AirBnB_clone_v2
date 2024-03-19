@@ -115,54 +115,56 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, arg):
-        """ Create an object with given parameters """
-        if not arg:
-            print("** class name missing **")
-            return
+    """ Create an object with given parameters """
+    if not arg:
+        print("** class name missing **")
+        return
 
-        args = arg.split()
-        class_name = args[0]
+    args = arg.split()
+    class_name = args[0]
 
-        if class_name not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
+    if class_name not in HBNBCommand.classes:
+        print("** class doesn't exist **")
+        return
 
-        # Extract parameters
-        params = {}
-        for param in args[1:]:
-            if "=" not in param:
+    # Extract parameters
+    params = {}
+    for param in args[1:]:
+        if "=" not in param:
+            continue
+        key, value = param.split("=")
+
+        # Handle string value
+        if value.startswith('"') and value.endswith('"'):
+            # Replace underscores with spaces
+            value = value[1:-1].replace('_', ' ')
+            # Unescape double quotes
+            value = value.replace('\\"', '"')
+        # Handle float value
+        elif '.' in value:
+            try:
+                value = float(value)
+            except ValueError:
                 continue
-            key, value = param.split("=")
-            if value.startswith('"') and value.endswith('"'):
-                # String value
-                value = value[1:-1].replace('_', ' ').replace('\\"', '"')
-            elif '.' in value:
-                # Float value
-                try:
-                    value = float(value)
-                except ValueError:
-                    continue
-            else:
-                # Integer value
-                try:
-                    value = int(value)
-                except ValueError:
-                    continue
-            params[key] = value
-    
-        # Ensure 'updated_at' is set
-        if 'updated_at' not in params:
-            params['updated_at'] = datetime.now().isoformat()
+        # Handle integer value
+        else:
+            try:
+                value = int(value)
+            except ValueError:
+                continue
+        params[key] = value
 
-        # Ensure 'created_at' is set
-        if 'created_at' not in params:
-            params['created_at'] = datetime.now().isoformat()
+    # Ensure 'updated_at' and 'created_at' are set
+    if 'updated_at' not in params:
+        params['updated_at'] = datetime.now().isoformat()
+    if 'created_at' not in params:
+        params['created_at'] = datetime.now().isoformat()
 
-        # Create instance with parameters
-        new_instance = HBNBCommand.classes[class_name](**params)
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+    # Create instance with parameters
+    new_instance = HBNBCommand.classes[class_name](**params)
+    storage.save()
+    print(new_instance.id)
+    storage.save()
     
     def help_create(self):
         """ Help information for the create method """
