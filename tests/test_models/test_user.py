@@ -16,20 +16,14 @@ class test_User(test_basemodel):
     def test_first_name(self):
         """ """
         new = self.value()
-<<<<<<< HEAD
-        self.assertEqual(type(new.first_name), str)
-=======
-        self.assertTrue(isinstance(new.first_name, str) or new.first_name is None)
->>>>>>> parent of 15f551e... changes
+        self.assertTrue(isinstance(new.first_name, str)
+                        or new.first_name is None)
 
     def test_last_name(self):
         """ """
         new = self.value()
-<<<<<<< HEAD
-        self.assertEqual(type(new.last_name), str)
-=======
-        self.assertTrue(isinstance(new.last_name, str) or new.last_name is None)
->>>>>>> parent of 15f551e... changes
+        self.assertTrue(isinstance(new.last_name, str)
+                        or new.last_name is None)
 
     def test_email(self):
         """ """
