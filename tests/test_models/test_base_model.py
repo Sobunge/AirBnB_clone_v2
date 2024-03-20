@@ -101,12 +101,12 @@ class test_basemodel(unittest.TestCase):
 
     def test_id(self):
         """ """
-        new = self.value()
+        new = self.value(email="test@example.com", password="test")
         self.assertEqual(type(new.id), str)
 
     def test_created_at(self):
         """ """
-        new = self.value()
+        new = self.value(email="test@example.com", password="test")
         self.assertEqual(type(new.created_at), datetime.datetime)
 
     def test_updated_at(self):
