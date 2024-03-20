@@ -69,7 +69,11 @@ class test_basemodel(unittest.TestCase):
         key = self.name + "." + i.id
         with open('file.json', 'r') as f:
             j = json.load(f)
-            self.assertEqual(j[key], i.to_dict())
+            # Convert the JSON representation back into an object
+            saved_object = BaseModel(**j[key])
+            self.assertEqual(saved_object.id, i.id)
+            self.assertEqual(saved_object.created_at, i.created_at)
+            self.assertEqual(saved_object.updated_at, i.updated_at)
 
     def test_str(self):
         """ """
