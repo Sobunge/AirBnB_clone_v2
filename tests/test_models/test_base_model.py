@@ -117,9 +117,6 @@ class test_basemodel(unittest.TestCase):
         n = new.to_dict()
         new = BaseModel(**n)
 
-        print("Created at:", new.created_at)
-        print("Updated at:", new.updated_at)
-
         self.assertFalse(new.created_at == new.updated_at)
 
     def test_uuid(self):
