@@ -65,10 +65,15 @@ class test_fileStorage(unittest.TestCase):
     def test_reload(self):
         """ Storage file is successfully loaded to __objects """
         new = BaseModel()
-        storage.save()
+        new.save()
         storage.reload()
-        for obj in storage.all().values():
-            loaded = obj
+
+        # Retrieve the reloaded object from storage
+        key = f"BaseModel.{new.id}"
+        loaded = storage.all().get(key)
+
+        # Perform the assertion
+        self.assertIsNotNone(loaded)
         self.assertEqual(new.to_dict()['id'], loaded.to_dict()['id'])
 
     def test_reload_empty(self):
