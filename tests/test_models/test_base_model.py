@@ -112,6 +112,7 @@ class test_basemodel(unittest.TestCase):
     def test_updated_at(self):
         """Test that updated_at attribute is different from created_at"""
         new = self.value()
+        new.save()
         self.assertEqual(type(new.updated_at), datetime.datetime)
         n = new.to_dict()
         new = BaseModel(**n)
