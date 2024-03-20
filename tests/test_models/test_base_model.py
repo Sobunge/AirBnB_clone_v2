@@ -112,9 +112,6 @@ class test_basemodel(unittest.TestCase):
         n = new.to_dict()
         new = BaseModel(**n)
 
-        # Add a delay to ensure updated_at is different from created_at
-        time.sleep(1)  # Adjust the delay time as needed
-
         print("Created at:", new.created_at)
         print("Updated at:", new.updated_at)
 
