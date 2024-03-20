@@ -22,7 +22,7 @@ class test_City(test_basemodel):
 
     def test_name(self):
         """ """
-        new = self.value()
+        new = self.value(name="test")
         self.assertEqual(type(new.name), str)
 
 
