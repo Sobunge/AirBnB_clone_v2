@@ -2,6 +2,7 @@
 """ """
 from tests.test_models.test_base_model import test_basemodel
 from models.city import City
+from models.base_model import BaseModel
 import pycodestyle
 import unittest
 import pep8
