@@ -31,4 +31,6 @@ class User(BaseModel, Base):
         """Initializes a new User instance."""
         if not isinstance(password, str):
             raise TypeError("Password must be a string")
-        super().__init__(email=email, password=password, first_name=first_name, last_name=last_name)
+        super().__init__(email=email, password=password,
+                         first_name=first_name,
+                         last_name=last_name)
