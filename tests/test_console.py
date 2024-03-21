@@ -22,8 +22,7 @@ class TestHBNBCommand(unittest.TestCase):
         """ """  
         console = HBNBCommand()
         console.help_quit()
-        self.assertEqual(mock_stdout.getvalue(),
-                         "Exits the program with formatting\n\n")
+        self.assertEqual(mock_stdout.getvalue(), "Exits the program with formatting\n\n")
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_do_EOF(self, mock_stdout):
@@ -36,8 +35,7 @@ class TestHBNBCommand(unittest.TestCase):
     def test_help_EOF(self, mock_stdout):
         console = HBNBCommand()
         console.help_EOF()
-        self.assertEqual(mock_stdout.getvalue(),
-                         "Exits the program without formatting\n\n")
+        self.assertEqual(mock_stdout.getvalue(), "Exits the program without formatting\n\n")
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_emptyline(self, mock_stdout):
