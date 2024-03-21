@@ -117,37 +117,22 @@ class HBNBCommand(cmd.Cmd):
         """ Create an object of any class"""
         try:
             if not args:
-                raise SyntaxError("No arguments provided")
-
+                raise SyntaxError()
             arg_list = args.split(" ")
-            class_name = arg_list[0]
-
-            if class_name not in self.classes:
-                raise NameError("Class doesn't exist")
-
             kw = {}
-
             for arg in arg_list[1:]:
-                arg_split = arg.split("=")
-                if len(arg_split) != 2:
-                    raise SyntaxError(f"Invalid argument format: {arg}")
-                attr_name, attr_value = arg_split
-
-                # Remove quotes and replace underscores
-                if isinstance(attr_value, str):
-                    attr_value = attr_value.replace("_", " ").replace('"', '\\"')
-
-                kw[attr_name] = eval(attr_value)
-
-            new_instance = self.classes[class_name](**kw)
-            new_instance.save()
-            print(new_instance.id)
-
-        except SyntaxError as e:
-            print(f"SyntaxError: {e}")
-        except NameError as e:
-            print(f"NameError: {e}")
-
+                arg_splited = arg.split("=")
+                arg_splited[1] = eval(arg_splited[1])
+                if type(arg_splited[1]) is str:
+                    arg_splited[1] = arg_splited[1].replace("_", " ").replace('"', '\\"')
+                kw[arg_splited[0]] = arg_splited[1]
+        except SyntaxError:
+            print("** class name missing **")
+        except NameError:
+            print("** class doesn't exist **")
+        new_instance = HBNBCommand.classes[arg_list[0]](**kw)
+        new_instance.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
@@ -210,7 +195,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del (storage.all()[key])
+            del(storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -334,15 +319,12 @@ class HBNBCommand(cmd.Cmd):
                 # update dictionary with name, value pair
                 new_dict.__dict__.update({att_name: att_val})
 
-        new_dict.updated_at = datetime.now()
-
         new_dict.save()  # save updates to file
 
     def help_update(self):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
-
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
