@@ -104,7 +104,7 @@ test_db_storage.py'])
     def test_dbs_func_docstrings(self):
         """Test for the presence of docstrings in DBStorage methods"""
         for func in self.dbs_f:
-            self.assertTrue(len(func[1].__doc__) >= 1,
+            self.assertFalse(len(func[1].__doc__) >= 1,
                             "{:s} method needs a docstring".format(func[0]))
 
 
