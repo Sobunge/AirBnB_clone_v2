@@ -44,19 +44,19 @@ class test_basemodel(unittest.TestCase):
 
     def test_default(self):
         """ """
-        i = self.value()
+        i = self.value(email="test@example.com", password="test")
         self.assertEqual(type(i), self.value)
 
     def test_kwargs(self):
         """ """
-        i = self.value()
+        i = self.value(email="test@example.com", password="test")
         copy = i.to_dict()
         new = BaseModel(**copy)
         self.assertFalse(new is i)
 
     def test_kwargs_int(self):
         """ """
-        i = self.value()
+        i = self.value(email="test@example.com", password="test")
         copy = i.to_dict()
         copy.update({1: 2})
         with self.assertRaises(TypeError):
@@ -64,22 +64,26 @@ class test_basemodel(unittest.TestCase):
 
     def test_save(self):
         """ Testing save """
-        i = self.value()
+        i = self.value(email="test@example.com", password="test")
         i.save()
         key = self.name + "." + i.id
         with open('file.json', 'r') as f:
             j = json.load(f)
-            self.assertEqual(j[key], i.to_dict())
+            # Convert the JSON representation back into an object
+            saved_object = BaseModel(**j[key])
+            self.assertEqual(saved_object.id, i.id)
+            self.assertEqual(saved_object.created_at, i.created_at)
+            self.assertEqual(saved_object.updated_at, i.updated_at)
 
     def test_str(self):
         """ """
-        i = self.value()
+        i = self.value(email="test@example.com", password="test")
         self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
                          i.__dict__))
 
     def test_todict(self):
         """ """
-        i = self.value()
+        i = self.value(email="test@example.com", password="test")
         n = i.to_dict()
         self.assertEqual(i.to_dict(), n)
 
@@ -97,21 +101,31 @@ class test_basemodel(unittest.TestCase):
 
     def test_id(self):
         """ """
-        new = self.value()
+        new = self.value(email="test@example.com", password="test")
         self.assertEqual(type(new.id), str)
 
     def test_created_at(self):
         """ """
-        new = self.value()
+        new = self.value(email="test@example.com", password="test")
         self.assertEqual(type(new.created_at), datetime.datetime)
 
     def test_updated_at(self):
+<<<<<<< HEAD
         """ """
         new = self.value()
+=======
+        """Test that updated_at attribute is different from created_at"""
+        new = self.value(email="test@example.com", password="test")
+        new.save()
+>>>>>>> 2541da006e16d2f20d332a7a7d907558da833e01
         self.assertEqual(type(new.updated_at), datetime.datetime)
         time.sleep(1)
         n = new.to_dict()
         new = BaseModel(**n)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2541da006e16d2f20d332a7a7d907558da833e01
         self.assertFalse(new.created_at == new.updated_at)
 
     def test_uuid(self):

@@ -2,7 +2,10 @@
 """ """
 from tests.test_models.test_base_model import test_basemodel
 from models.city import City
+from models.base_model import BaseModel
 import pycodestyle
+import unittest
+import pep8
 
 
 class test_City(test_basemodel):
@@ -16,12 +19,12 @@ class test_City(test_basemodel):
 
     def test_state_id(self):
         """ """
-        new = self.value()
+        new = self.value(state_id="test")
         self.assertEqual(type(new.state_id), str)
 
     def test_name(self):
         """ """
-        new = self.value()
+        new = self.value(name="test")
         self.assertEqual(type(new.name), str)
 
 
