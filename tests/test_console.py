@@ -5,8 +5,10 @@ from unittest.mock import patch
 from io import StringIO
 from console import HBNBCommand
 
+
 class TestHBNBCommand(unittest.TestCase):
     """ """
+    
     @patch('sys.stdout', new_callable=StringIO)
     def test_do_quit(self, mock_stdout):
         """ """
