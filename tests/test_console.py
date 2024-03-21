@@ -20,8 +20,8 @@ class TestHBNBCommand(unittest.TestCase):
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_help_quit(self, mock_stdout):
-      """ """  
-      console = HBNBCommand()
+        """ """  
+        console = HBNBCommand()
         console.help_quit()
         self.assertEqual(mock_stdout.getvalue(), "Exits the program with formatting\n\n")
 
