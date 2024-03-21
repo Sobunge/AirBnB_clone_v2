@@ -110,22 +110,18 @@ class test_basemodel(unittest.TestCase):
         self.assertEqual(type(new.created_at), datetime.datetime)
 
     def test_updated_at(self):
-<<<<<<< HEAD
         """ """
         new = self.value()
-=======
+
         """Test that updated_at attribute is different from created_at"""
         new = self.value(email="test@example.com", password="test")
         new.save()
->>>>>>> 2541da006e16d2f20d332a7a7d907558da833e01
+
         self.assertEqual(type(new.updated_at), datetime.datetime)
         time.sleep(1)
         n = new.to_dict()
         new = BaseModel(**n)
-<<<<<<< HEAD
-=======
 
->>>>>>> 2541da006e16d2f20d332a7a7d907558da833e01
         self.assertFalse(new.created_at == new.updated_at)
 
     def test_uuid(self):
